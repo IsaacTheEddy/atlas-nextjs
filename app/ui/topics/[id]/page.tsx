@@ -2,6 +2,7 @@ import { fetchQuestions, fetchTopic } from "@/lib/data";
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { Question } from "@/components/Question";
 import { AskQuestion } from "@/components/AskQuestion";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -23,12 +24,14 @@ export default async function Page({
       </h1>
       <AskQuestion topic={topic.id} />
       {(await questions).map((question) => (
-        <Question
-          key={question.id}
-          id={question.id}
-          text={question.title}
-          votes={question.votes}
-        />
+        <Link href={"/ui/awnsers/:id"}>
+          <Question
+            key={question.id}
+            id={question.id}
+            text={question.title}
+            votes={question.votes}
+          />
+        </Link>
       ))}
     </div>
   );
