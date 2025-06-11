@@ -24,14 +24,12 @@ export default async function Page({
       </h1>
       <AskQuestion topic={topic.id} />
       {(await questions).map((question) => (
-        <Link href={"/ui/awnsers/:id"}>
-          <Question
-            key={question.id}
-            id={question.id}
-            text={question.title}
-            votes={question.votes}
-          />
-        </Link>
+        <Question
+          key={question.id}
+          id={question.id}
+          text={question.title}
+          votes={question.votes}
+        />
       ))}
     </div>
   );

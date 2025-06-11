@@ -19,3 +19,9 @@ export type Question = {
   topic_id: string;
   votes: number;
 };
+
+export type Answer ={
+  id: string;
+  question_id: string;
+  answer: string;
+}

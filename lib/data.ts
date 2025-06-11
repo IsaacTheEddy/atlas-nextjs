@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import { Question, Topic, User } from "./definitions";
+import { Answer, Question, Topic, User } from "./definitions";
 
 export async function fetchUser(email: string): Promise<User | undefined> {
   try {
@@ -41,6 +41,16 @@ export async function fetchQuestions(id: string) {
     throw new Error("Failed to fetch questions.");
   }
 }
+export async function fetchQuestion(id: string) {
+  try {
+    const data =
+      await sql<Question>`SELECT * FROM questions WHERE id = ${id}`;
+     return data.rows && data.rows.length > 0 ? data.rows[0] : null;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch questions.");
+  }
+}
 
 export async function insertQuestion(
   question: Pick<Question, "title" | "topic_id" | "votes">
@@ -75,5 +85,37 @@ export async function incrementVotes(id: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to increment votes.");
+  }
+}
+export async function insertanswer(
+  answer: Pick<Answer, "answer" | "question_id">
+) {
+  try {
+    const data =
+      await sql<Answer>`INSERT INTO answers (answer, question_id) VALUES (${answer.answer}, ${answer.question_id})`;
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to add answer.");
+  }
+}
+
+export async function fetchAnswer(id: string){
+  try{
+    const data = await sql<Answer>`SELECT * FROM answers WHERE question_id = ${id}`
+    return data.rows && data.rows.length > 0 ? data.rows[0] : null;
+  } catch (e){
+    console.error("Database cant find answer", e)
+    throw new Error("Failed to find answer")
+  }
+}
+
+export async function fetchAnswers(id: string){
+  try{
+    const data = await sql<Answer>`SELECT * FROM answers WHERE question_id = ${id} `
+    return data.rows;
+  } catch (e){
+    console.error("Database cant find answer", e)
+    throw new Error("Failed to find answer")
   }
 }
