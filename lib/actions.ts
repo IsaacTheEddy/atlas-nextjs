@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { incrementVotes, insertanswer, insertQuestion, insertTopic } from "./data";
 import { redirect } from "next/navigation";
+import { correctAnswer } from "./data";
 
 export async function addTopic(data: FormData){
     let topic;
@@ -53,5 +54,18 @@ export async function answerQuestion(answer: FormData){
     } catch (error) {
         console.error("Database Error:", error)
         throw new Error("Failed to add answer.")
+    }
+}
+
+export async function markCorrect(question: FormData){
+    try{
+        correctAnswer({
+            id: question.get("question_id") as string,
+            answer_id: question.get("answer_id") as string
+        })
+        
+    }catch (e){
+        console.error("Didn't mark new answer")
+        throw new Error("Didnt mark new answer")
     }
 }

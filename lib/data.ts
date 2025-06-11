@@ -87,18 +87,6 @@ export async function incrementVotes(id: string) {
     throw new Error("Failed to increment votes.");
   }
 }
-export async function insertanswer(
-  answer: Pick<Answer, "answer" | "question_id">
-) {
-  try {
-    const data =
-      await sql<Answer>`INSERT INTO answers (answer, question_id) VALUES (${answer.answer}, ${answer.question_id})`;
-    return data.rows[0];
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to add answer.");
-  }
-}
 
 export async function fetchAnswer(id: string){
   try{
@@ -117,5 +105,29 @@ export async function fetchAnswers(id: string){
   } catch (e){
     console.error("Database cant find answer", e)
     throw new Error("Failed to find answer")
+  }
+}
+
+export async function insertanswer(
+  answer: Pick<Answer, "answer" | "question_id">
+) {
+  try {
+    const data =
+      await sql<Answer>`INSERT INTO answers (answer, question_id) VALUES (${answer.answer}, ${answer.question_id})`;
+    return data.rows[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to add answer.");
+  }
+}
+
+export async function correctAnswer(question: Pick<Question, "id" | "answer_id">){
+  try {
+    const data = await sql`UPDATE questions SET answer_id = ${question.answer_id} WHERE id = ${question.id} `
+    console.log(`Succesfully updated ${question.answer_id}`)
+    return data.rows[0]
+  } catch (e){
+    console.error("Error updating correct awnser", e)
+    throw new Error("Failed to change correct answer")
   }
 }

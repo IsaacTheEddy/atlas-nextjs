@@ -27,7 +27,12 @@ export default async function Page({
       </h1>
       <AnswerQuestion question={question.id} />
       {(await answers).map((answer) => (
-        <Answer key={answer.id} id={answer.id} answer={answer.answer} />
+        <Answer
+          key={answer.id}
+          id={answer.id}
+          answer={answer.answer}
+          question_id={question.id}
+        />
       ))}
     </div>
   );
