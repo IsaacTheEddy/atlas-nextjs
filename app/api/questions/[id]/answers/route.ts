@@ -2,9 +2,9 @@ import { fetchAnswers } from "@/lib/data";
 import { NextResponse } from "next/server";
 
 
-export async function GET(request: Request, context: { params: { id: string } }) {
+export async function GET(request: Request,{ params}:{params: Promise<{ id: string }> }) {
   try {
-    const { id } = await context.params;
+    const { id } = await params;
 
     const data = await fetchAnswers(id);
 
